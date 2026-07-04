@@ -71,10 +71,10 @@ async def read_refresh_token(UserServiceDep: Annotated[UserService, Depends(get_
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_user(UserServiceDep: Annotated[UserService, Depends(get_user_service)], payload: CreateUserRequest) -> CreateUserResponse:
     
-    user_model = UserServiceDep.create_user(
+    user_model = await UserServiceDep.create_user(
         username=payload.username,
         email=payload.email,
-        hashed_password=UserServiceDep.hash_password(payload.password),
+        hashed_password=hash_password(payload.password),
         role=payload.role
     )
 

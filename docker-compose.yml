@@ -35,16 +35,31 @@ services:
       - wc_chatbot_network
   
   api:
-    build: .
-    env_file: .env
+    build: ./backend
+    env_file: ./backend/.env
     container_name: wc_chatbot_api
     ports:
       - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_DATABASE_URL}
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - wc_chatbot_network
+  
+  frontend:
+    build: ./frontend
+    container_name: wc_chatbot_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/src
+      - /src/node_modules
+    depends_on:
+      - api
     networks:
       - wc_chatbot_network
 

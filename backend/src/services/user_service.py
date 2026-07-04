@@ -73,7 +73,6 @@ class UserService:
         if not verify_password(password, user.hashed_password): return False
         return user
 
-
     async def create_user(
         self, username: str,
         email: str,

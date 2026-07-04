@@ -1,7 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routes import user_route
-
 from .routes import message_route
 from fastapi import FastAPI
 from .database import engine
