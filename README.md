@@ -143,7 +143,7 @@ CHAT_MAX_CONTENT_CHARS=100000
 CHAT_MAX_MESSAGES=20
 
 # --- Inference API (OpenAI-compatible) ---
-INFERENCE_BASE_URL=http://localhost:11434   # Ollama default; change for other providers
+INFERENCE_BASE_URL=http://host.docker.internal:11434   # Use host.docker.internal for local Ollama
 INFERENCE_API_KEY=ollama                    # Not required for local Ollama
 
 # --- Context Strategy ---
@@ -209,14 +209,24 @@ The backend calls any endpoint implementing the **OpenAI `/v1/chat/completions`*
 
 ### Option A — Ollama (local, free)
 
+> **⚠️ Important for Linux / Docker users:** By default, Ollama only listens to `localhost` (127.0.0.1). For the Dockerized backend to reach Ollama on your host machine, you must configure Ollama to listen on all network interfaces (`0.0.0.0`):
+> 
+> ```bash
+> sudo mkdir -p /etc/systemd/system/ollama.service.d
+> echo -e "[Service]\nEnvironment=\"OLLAMA_HOST=0.0.0.0\"" | sudo tee /etc/systemd/system/ollama.service.d/override.conf
+> sudo systemctl daemon-reload
+> sudo systemctl restart ollama
+> ```
+
 ```bash
 # Install Ollama: https://ollama.com
 ollama pull llama3.2:3b
-ollama serve   # starts at http://localhost:11434
 ```
 
+In your backend `.env`, make sure to use `host.docker.internal` instead of `localhost`:
+
 ```env
-INFERENCE_BASE_URL=http://localhost:11434
+INFERENCE_BASE_URL=http://host.docker.internal:11434
 INFERENCE_API_KEY=ollama
 ```
 
