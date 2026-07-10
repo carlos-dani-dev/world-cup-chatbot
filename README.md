@@ -58,33 +58,40 @@ OpenAI-Compatible LLM API
 
 ### Frontend
 
-| Tool | Purpose |
-|---|---|
-| [Vue 3](https://vuejs.org/) + `<script setup>` | UI framework, Composition API |
-| [Vite 8](https://vite.dev/) | Dev server, bundler, HMR |
-| [Pinia](https://pinia.vuejs.org/) | State management (auth, sessions, messages) |
-| [Vue Router 5](https://router.vuejs.org/) | Client-side routing with navigation guards |
-| [TailwindCSS v4](https://tailwindcss.com/) | Utility-first styling |
-| [Headless UI](https://headlessui.com/vue) | Accessible animated sidebar drawer |
-| [marked](https://marked.js.org/) + [DOMPurify](https://github.com/cure53/DOMPurify) | Markdown rendering with XSS sanitization |
-| [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader) | SVG files as Vue components |
-| [Heroicons](https://heroicons.com/) | Icon set |
+| Tool | Versão | Purpose |
+|---|---|---|
+| [Vue 3](https://vuejs.org/) + `<script setup>` | ^3.5.38 | UI framework, Composition API |
+| [Vite](https://vite.dev/) | ^8.0.16 | Dev server, bundler, HMR |
+| [Pinia](https://pinia.vuejs.org/) | ^3.0.4 | State management (auth, sessions, messages) |
+| [Vue Router](https://router.vuejs.org/) | ^5.1.0 | Client-side routing with navigation guards |
+| [TailwindCSS](https://tailwindcss.com/) | ^4.3.1 | Utility-first styling |
+| [Headless UI](https://headlessui.com/vue) | ^1.7.23 | Accessible animated sidebar drawer |
+| [marked](https://marked.js.org/) | ^18.0.5 | Markdown rendering |
+| [DOMPurify](https://github.com/cure53/DOMPurify) | ^3.4.11 | XSS sanitization |
+| [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader) | ^5.1.1 | SVG files as Vue components |
+| [Heroicons](https://heroicons.com/) | ^2.2.0 | Icon set |
+| [@lottiefiles/dotlottie-vue](https://lottiefiles.com/) | ^0.11.16 | Lottie animations |
+| [@preline/overlay](https://preline.co/) | ^4.2.0 | Overlay components |
 
 ### Backend
 
-| Tool | Purpose |
-|---|---|
-| [FastAPI](https://fastapi.tiangolo.com/) | REST API framework |
-| [Python 3.13](https://www.python.org/) | Runtime |
-| [SQLAlchemy 2](https://www.sqlalchemy.org/) | ORM with typed `Mapped` columns |
-| [Alembic](https://alembic.sqlalchemy.org/) | Database migrations |
-| [PostgreSQL 18](https://www.postgresql.org/) | Primary database (via Docker) |
-| [python-jose](https://python-jose.readthedocs.io/) | JWT encoding/decoding |
-| [bcrypt](https://pypi.org/project/bcrypt/) | Password hashing |
-| [httpx](https://www.python-httpx.org/) | HTTP client for inference API calls |
-| [Poetry](https://python-poetry.org/) | Dependency management |
-| [Docker + Docker Compose](https://docs.docker.com/compose/) | Containerized backend stack |
-| [pgAdmin 4](https://www.pgadmin.org/) | Database management UI |
+| Tool | Versão | Purpose |
+|---|---|---|
+| [FastAPI](https://fastapi.tiangolo.com/) | >=0.136.3,<0.137.0 | REST API framework |
+| [Python](https://www.python.org/) | >=3.13,<4.0 | Runtime |
+| [SQLAlchemy](https://www.sqlalchemy.org/) | >=2.0.50,<3.0.0 | ORM with typed `Mapped` columns |
+| [Alembic](https://alembic.sqlalchemy.org/) | >=1.18.4,<2.0.0 | Database migrations |
+| [PostgreSQL](https://www.postgresql.org/) | 18-alpine | Primary database (via Docker) |
+| [python-jose](https://python-jose.readthedocs.io/) | >=3.5.0,<4.0.0 | JWT encoding/decoding |
+| [bcrypt](https://pypi.org/project/bcrypt/) | >=5.0.0,<6.0.0 | Password hashing |
+| [httpx](https://www.python-httpx.org/) | >=0.28.1,<0.29.0 | HTTP client for inference API calls |
+| [Poetry](https://python-poetry.org/) | >=2.0.0,<3.0.0 | Dependency management |
+| [Docker + Docker Compose](https://docs.docker.com/compose/) | - | Containerized backend stack |
+| [pgAdmin 4](https://www.pgadmin.org/) | latest | Database management UI |
+| [Pandas](https://pandas.pydata.org/) | >=3.0.3,<4.0.0 | Data manipulation |
+| [NumPy](https://numpy.org/) | >=2.4.6,<3.0.0 | Numerical computing |
+| [Taskipy](https://github.com/taskipy/taskipy) | >=1.14.1,<2.0.0 | Task runner |
+| [Starlette](https://www.starlette.io/) | >=1.2.1,<2.0.0 | ASGI toolkit |
 
 ---
 
@@ -266,46 +273,64 @@ Any provider serving `POST /v1/chat/completions` will work (LM Studio, vLLM, Tog
 
 ```
 frontend/
-└── src/
-    ├── views/                   # Routed pages
-    │   ├── Chat.vue             # Main chat interface
-    │   ├── Login.vue            # Sign in page
-    │   └── Signup.vue           # Registration page
-    ├── components/              # Reusable UI components
-    │   ├── SideBarMenu.vue      # Slide-over session drawer (Headless UI)
-    │   ├── ProfileMenu.vue      # Profile dropdown (sign out)
-    │   └── Message.vue          # Individual chat message bubble
-    ├── stores/                  # Pinia state management
-    │   ├── auth.js              # Access token + localStorage persistence
-    │   ├── chat_session_store.js
-    │   └── chat_messages_store.js
-    ├── services/                # API communication layer
-    │   ├── api.js               # Base fetch + JWT silent refresh interceptor
-    │   ├── chat.js              # Chat session endpoints
-    │   └── message.js           # Message endpoints
-    └── router/
-        └── router.js            # Routes + auth navigation guard
+├── src/
+│   ├── views/                   # Routed pages
+│   │   ├── Chat.vue             # Main chat interface
+│   │   ├── Login.vue            # Sign in page
+│   │   └── Signup.vue           # Registration page
+│   ├── components/              # Reusable UI components
+│   │   ├── SideBarMenu.vue      # Slide-over session drawer (Headless UI)
+│   │   ├── ProfileMenu.vue      # Profile dropdown (sign out)
+│   │   └── Message.vue          # Individual chat message bubble
+│   ├── stores/                  # Pinia state management
+│   │   └── auth.js              # Access token + localStorage persistence
+│   ├── services/                # API communication layer
+│   │   └── api.js               # Base fetch + JWT silent refresh interceptor
+│   ├── router/
+│   │   └── router.js            # Routes + auth navigation guard
+│   └── assets/
+│       ├── main.css             # Global styles
+│       └── icons/               # SVG icons
+├── package.json                 # Dependencies and scripts
+├── vite.config.js               # Vite configuration
+├── dockerfile                   # Frontend Docker image
+└── index.html                   # Entry HTML
 
 backend/
-└── src/
-    ├── app.py                   # FastAPI app, CORS, router registration
-    ├── config.py                # Environment variable loading
-    ├── models.py                # SQLAlchemy ORM models (User, ChatSession, ChatMessage)
-    ├── database.py              # Engine + SessionLocal factory
-    ├── dependencies.py          # FastAPI DI (db session, auth, services)
-    ├── routes/
-    │   ├── user_route.py        # /auth — login, signup, token refresh
-    │   ├── chat_route.py        # /chats — session CRUD
-    │   └── message_route.py     # /chats/{id}/messages — send & list messages
-    ├── services/
-    │   ├── chat_service.py      # Core logic: context strategy, prompt building, persistence
-    │   └── user_service.py      # Auth, JWT creation, password hashing
-    ├── clients/
-    │   ├── inference_client.py  # httpx client for the OpenAI-compatible LLM API
-    │   └── inference_gw.py      # Gateway wrapper
-    ├── repository/              # Database access layer (repositories pattern)
-    ├── schemas/                 # Pydantic request/response models
-    └── exceptions/              # Custom exception types
+├── src/
+│   ├── app.py                   # FastAPI app, CORS, router registration
+│   ├── config.py                # Environment variable loading
+│   ├── models.py                # SQLAlchemy ORM models (User, ChatSession, ChatMessage)
+│   ├── database.py              # Engine + SessionLocal factory
+│   ├── dependencies.py          # FastAPI DI (db session, auth, services)
+│   ├── routes/
+│   │   ├── user_route.py        # /auth — login, signup, token refresh
+│   │   ├── chat_route.py        # /chats — session CRUD
+│   │   └── message_route.py     # /chats/{id}/messages — send & list messages
+│   ├── services/
+│   │   ├── chat_service.py      # Core logic: context strategy, prompt building, persistence
+│   │   └── user_service.py      # Auth, JWT creation, password hashing
+│   ├── clients/
+│   │   ├── inference_client.py  # httpx client for the OpenAI-compatible LLM API
+│   │   └── inference_gw.py      # Gateway wrapper
+│   ├── repository/              # Database access layer (repositories pattern)
+│   │   ├── chat_session_repository.py
+│   │   └── user_repository.py
+│   ├── schemas/                 # Pydantic request/response models
+│   │   ├── user_schema.py
+│   │   ├── chat_session_schema.py
+│   │   ├── chat_message_schema.py
+│   │   └── openaiLike_schema.py # OpenAI-compatible request/response schemas
+│   └── exceptions/              # Custom exception types
+│       └── exceptions.py
+├── alembic/                     # Database migrations
+├── alembic.ini                  # Alembic configuration
+├── pyproject.toml               # Poetry dependencies
+├── poetry.lock                  # Dependency lock file
+├── dockerfile                   # Backend Docker image
+└── .env                         # Environment variables
+
+docker-compose.yml              # Full stack orchestration
 ```
 
 ---
@@ -342,11 +367,59 @@ Then set `CONTEXT_STRATEGY=my_summary` in `.env`.
 POST /auth/          →  create account
 POST /auth/token     →  login → returns { access_token } + sets HttpOnly refresh_token cookie
 POST /auth/refresh   →  silently renews access_token using the cookie
+GET /auth/           →  get current user info
 ```
 
 The frontend (`api.js`) automatically retries any `401` response by hitting `/auth/refresh` before re-sending the original request. Users stay logged in transparently until the refresh token expires (5 days by default).
 
+### JWT Configuration
+
+- **Access Token**: 20 minutes expiration
+- **Refresh Token**: 5 days expiration (stored as HttpOnly cookie)
+- **Algorithm**: HS256
+- **Storage**: Access token in localStorage, refresh token in HttpOnly cookie
+
 ---
+
+## 🗄️ Database Schema
+
+### Tables
+
+**users**
+- `id` (UUID, PK)
+- `email` (String)
+- `username` (String)
+- `hashed_password` (String)
+- `role` (String)
+- Relationship: One-to-many with `chat_sessions`
+
+**chat_sessions**
+- `id` (UUID, PK)
+- `user_id` (UUID, FK → users.id)
+- `title` (String)
+- `channel` (String, default: "web")
+- `created_at` (DateTime)
+- `chat_session_summary` (String, nullable)
+- `session_metadata` (JSON)
+- Relationships: Many-to-one with `users`, One-to-many with `chat_messages`
+
+**chat_messages**
+- `id` (UUID, PK)
+- `session_id` (UUID, FK → chat_sessions.id, ON DELETE CASCADE)
+- `role` (String: "user" | "assistant" | "system")
+- `content` (String)
+- `created_at` (DateTime)
+- Relationship: Many-to-one with `chat_sessions`
+
+## 🚨 Custom Exceptions
+
+The backend implements custom exception types for better error handling:
+
+- `UsernameAlreadyExistsError`: Raised when attempting to create a user with an existing username
+- `ChatSessionNotFoundError`: Raised when a requested chat session doesn't exist or doesn't belong to the user
+- `InferenceConnectionError`: Raised when unable to connect to the inference API
+- `InferenceHTTPError`: Raised when the inference API returns an HTTP error (4xx/5xx)
+- `InferenceParseError`: Raised when unable to parse the inference API response as JSON
 
 ## 🧪 Running Tests
 
@@ -356,6 +429,39 @@ poetry run task test
 # or directly:
 poetry run pytest
 ```
+
+## 📊 API Endpoints
+
+### Authentication (`/auth`)
+
+| Method | Endpoint | Description | Auth Required |
+|---|---|---|---|
+| POST | `/auth` | Create new user account | No |
+| POST | `/auth/token` | Login (returns access token + sets refresh cookie) | No |
+| POST | `/auth/refresh` | Refresh access token using refresh cookie | No |
+| GET | `/auth` | Get current user info | Yes |
+
+### Chat Sessions (`/chats`)
+
+| Method | Endpoint | Description | Auth Required |
+|---|---|---|---|
+| GET | `/chats` | List all chat sessions for current user | Yes |
+| GET | `/chats/{id}` | Get specific chat session details | Yes |
+| POST | `/chats` | Create new chat session | Yes |
+| DELETE | `/chats/{id}` | Delete chat session | Yes |
+
+### Messages (`/chats/{id}/messages`)
+
+| Method | Endpoint | Description | Auth Required |
+|---|---|---|---|
+| GET | `/chats/{id}/messages` | List all messages in a chat session | Yes |
+| POST | `/chats/{id}/messages` | Send message and get LLM response | Yes |
+
+### Health Check
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/healthy` | API health check |
 
 ---
 
@@ -373,6 +479,26 @@ poetry run pytest
 
 ---
 
+## 👨‍💻 Development Team
+
+**Developer**: Carlos Daniel Rocha
+**Contact**: carlos.rocha@ufpi.edu.br
+
 ## 📄 License
 
 MIT — use freely, modify as needed.
+
+## 🚀 Roadmap / Próximos Passos
+
+- [ ] Implement streaming responses (SSE) for real-time LLM output
+- [ ] Add more context strategies (summary-based, semantic search)
+- [ ] Implement file upload and document analysis capabilities
+- [ ] Add internationalization (i18n) support
+- [ ] Implement rate limiting for API endpoints
+- [ ] Add comprehensive test coverage for frontend and backend
+- [ ] Implement WebSocket support for real-time chat updates
+- [ ] Add admin panel for user and session management
+- [ ] Implement conversation export functionality (PDF, Markdown)
+- [ ] Add analytics and usage metrics dashboard
+- [ ] Implement multi-language model support per session
+- [ ] Add conversation sharing and collaboration features
